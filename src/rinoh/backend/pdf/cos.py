@@ -567,7 +567,10 @@ class Document(dict):
         trailer['Size'] = Integer(self.max_identifier + 1)
         trailer['Root'] = self.catalog
         trailer['Info'] = self.info
-        md5sum = hashlib.md5()
+        try:
+            md5sum = hashlib.md5(usedforsecurity=False)
+        except TypeError:
+            md5sum = hashlib.md5()
         md5sum.update(str(self.timestamp).encode())
         md5sum.update(str(file.tell()).encode())
         for value in self.info.values():
